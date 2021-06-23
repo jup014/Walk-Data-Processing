@@ -1,0 +1,5 @@
+django_src/credentials/*.env
+
+
+*.pyc
+*.sqlite3

@@ -1,0 +1,2 @@
+Django
+environ==1.0
