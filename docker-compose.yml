@@ -32,3 +32,18 @@ services:
             - "8000:8000"
         volumes:
             - ./django_src:/app
+
+    worker:
+        build:
+            context: .
+            dockerfile: ./compose/worker/dev.Dockerfile
+        environment:
+            - DJANGO_DEBUG=True
+            - DJANGO_DB_HOST=db
+            - DJANGO_DB_PORT=5432
+            - DJANGO_DB_NAME=walkdb
+            - DJANGO_DB_USER=sampleuser
+            - DJANGO_DB_PASSWORD=samplesecret
+            - DJANGO_SECRET_KEY=dev_secret_key
+        volumes:
+            - ./django_src:/app
