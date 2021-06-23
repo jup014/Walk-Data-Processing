@@ -1,11 +1,19 @@
 <h1>Dashboard</h1>
 <ul>
-    <li>CSV File Upload: 
+    <li>
         <form action="{% url 'dashboard-generic' %}" method="post" role="form" enctype="multipart/form-data">
             {% csrf_token %}
             <input type="hidden" name="command" value="csv_file_upload">
-            <input type="file" class="form-control-file" id="csv_file_upload" name="csv_file_upload">
+            CSV File Upload: <input type="file" class="form-control-file" id="csv_file_upload" name="csv_file_upload">
             <input type="submit">
+        </form>
+    </li>
+
+    <li>
+        <form action="{% url 'dashboard-generic' %}" method="post" role="form" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="hidden" name="command" value="execute_task">
+            Execute the tasks: <input type="submit" value="Go!">
         </form>
     </li>
 </ul>

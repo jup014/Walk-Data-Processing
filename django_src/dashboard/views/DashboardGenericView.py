@@ -8,6 +8,7 @@ from django.db import IntegrityError
 
 
 from dashboard.services import CSVFileUploadService
+from dashboard.services import TaskExecutionService
 
 class DashboardGenericView(TemplateView):
     template_name = 'dashboard/DashboardGenericView.html'
@@ -36,6 +37,10 @@ class DashboardGenericView(TemplateView):
                     context["result"] = service.load_csv(csv_file)
                 else:
                     raise RuntimeError("File is not uploaded")
+            elif command == 'execute_task':
+                service = TaskExecutionService()
+                
+                context["result"] = service.execute()
             else:
                 context["result"] = "\n".join(msg_list)        
 
