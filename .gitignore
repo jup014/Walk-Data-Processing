@@ -4,3 +4,5 @@ django_src/credentials/*.env
 *.pyc
 *.sqlite3
 .DS_Store
+django_src/out.profile
+django_src/profile.txt

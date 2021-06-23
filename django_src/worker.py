@@ -16,10 +16,13 @@ TaskLog.log('worker initiated')
 
 no_further_job_print = False
 
+from task.tasks import minute_padding
+
 # # one-time
-# task = service.get_next_task()
-# if task:
-#     task.func(task.params)
+# for i in range(1, 100):
+#     task = service.get_next_task()
+#     if task:
+#         task.func(task.params)
 
 # loop
 while True:
