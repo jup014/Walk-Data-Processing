@@ -12,14 +12,8 @@ class RawSteps(models.Model):
     local_datetime = models.DateTimeField()
     user_id = models.IntegerField()
     steps = models.IntegerField()
-    
-    @property
-    def local_date(self):
-        return self.local_datetime.date()
-    
-    @property
-    def local_time(self):
-        return self.local_datetime.time()
+    local_date = models.DateField(null=True, blank=True)
+    local_time = models.TimeField(null=True, blank=True)
     
 class Padded_Steps(RawSteps):
     pass

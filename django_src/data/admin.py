@@ -10,7 +10,7 @@ def delete_all_raw_steps(modeladmin, request, queryset):
     RawSteps.objects.all().delete()
 
 class RawStepsAdmin(admin.ModelAdmin):
-    fields = ['local_datetime', 'user_id', 'steps']
+    fields = ['local_datetime', 'local_date', 'local_time', 'user_id', 'steps']
     actions = [delete_all_raw_steps]
     
     def changelist_view(self, request, extra_context=None):

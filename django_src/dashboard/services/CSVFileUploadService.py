@@ -26,7 +26,7 @@ class CSVFileUploadService:
                     header = row
                 else:
                     # TODO: insert data
-                    objects.append(RawSteps(local_datetime=row[2], user_id=row[0], steps=row[1]))
+                    objects.append(RawSteps(local_datetime=row[2], user_id=row[0], steps=row[1], local_date=row[3], local_time=row[4]))
                                 
                 line_index += 1
             RawSteps.objects.bulk_create(objects)
