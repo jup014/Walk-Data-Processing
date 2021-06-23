@@ -2,6 +2,7 @@ import random
 import csv
 import os
 
+from data.models import RawSteps
 
 class CSVFileUploadService:
     def load_csv(self, csv_file):
@@ -18,16 +19,17 @@ class CSVFileUploadService:
             datareader = csv.reader(f)
                         
             line_index = 0
-                        
+                    
+            objects = []    
             for row in datareader:
                 if line_index == 0:
                     header = row
-                    print(header)
                 else:
                     # TODO: insert data
-                    pass
+                    objects.append(RawSteps(local_datetime=row[2], user_id=row[0], steps=row[1]))
                                 
                 line_index += 1
-        
+            RawSteps.objects.bulk_create(objects)
+                    
         os.remove(filename)                    
         return ("{} lines are read. \nheader: {}".format(line_index, header))
