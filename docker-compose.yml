@@ -24,8 +24,8 @@ services:
             - DJANGO_DEBUG=True
             - DJANGO_DB_HOST=db
             - DJANGO_DB_PORT=5432
-            - DJANGO_DB_NAME=sampledb
-            - DJANGO_DB_USERNAME=sampleuser
+            - DJANGO_DB_NAME=walkdb
+            - DJANGO_DB_USER=sampleuser
             - DJANGO_DB_PASSWORD=samplesecret
             - DJANGO_SECRET_KEY=dev_secret_key
         ports:

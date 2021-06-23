@@ -1,2 +1,3 @@
 Django
-environ==1.0
+environ
+psycopg2
