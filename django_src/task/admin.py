@@ -28,7 +28,7 @@ def delete_all_tasks(modeladmin, request, queryset):
     Task.objects.all().delete()
 
 class TaskAdmin(DeleteAllAdmin):
-    readonly_fields = ('pkey', 'function_name', 'params', 'status', 'when_created', 'depends',)
+    readonly_fields = ('function_name', 'params', 'status', 'when_created', 'depends',)
     actions = [delete_all_tasks]
 
 delete_all_tasks.acts_on_all=True
