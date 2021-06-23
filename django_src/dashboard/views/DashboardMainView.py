@@ -4,3 +4,5 @@ from django.views.generic import TemplateView
 # Create your views here.
 class DashboardMainView(TemplateView):
     template_name = 'dashboard/DashboardMainView.html'
+    
+    

@@ -3,3 +3,4 @@ django_src/credentials/*.env
 
 *.pyc
 *.sqlite3
+.DS_Store
