@@ -34,3 +34,6 @@ class AverageWalked(models.Model):
     local_date = models.DateField(null=True, blank=True)
     local_time = models.TimeField(null=True, blank=True)
     window_size = models.IntegerField()
+
+    def __str__(self):
+        return "{} - user_id={}, n={}, m={}".format(self.local_datetime, self.user_id, self.window_size, self.mean_did_walked)
