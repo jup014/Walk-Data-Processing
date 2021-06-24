@@ -6,6 +6,7 @@ from .models import RawSteps
 from .models import Padded_Steps
 from .models import BinaryWalked
 from .models import AverageWalked
+from .models import BinaryWalked2
 
 
 @admin.action(description='Delete all RawSteps')
@@ -57,3 +58,16 @@ class AverageWalkedAdmin(DeleteAllAdmin):
 
 delete_all_average_walked.acts_on_all=True
 admin.site.register(AverageWalked, AverageWalkedAdmin)
+
+
+
+@admin.action(description='Delete all BinaryWalked2')
+def delete_all_binary_walked2(modeladmin, request, queryset):
+    BinaryWalked2.objects.all().delete()
+
+class BinaryWalked2Admin(DeleteAllAdmin):
+    fields = ['local_datetime', 'local_date', 'local_time', 'user_id', 'did_walked', 'window_size', 'threshold1']
+    actions = [delete_all_binary_walked2]
+
+delete_all_binary_walked2.acts_on_all=True
+admin.site.register(BinaryWalked2, BinaryWalked2Admin)

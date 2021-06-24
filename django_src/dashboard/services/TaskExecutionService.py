@@ -1,7 +1,7 @@
 from django.db import IntegrityError, transaction
 
 from data.models import RawSteps, Padded_Steps, BinaryWalked, \
-    AverageWalked
+    AverageWalked, BinaryWalked2
 
 from task.models import TaskLog
 
@@ -31,6 +31,7 @@ class TaskExecutionService:
         return "submitted"
     
     def reset(self):
+        BinaryWalked2.objects.all().delete()
         Padded_Steps.objects.all().delete()
         BinaryWalked.objects.all().delete()
         AverageWalked.objects.all().delete()

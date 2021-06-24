@@ -37,3 +37,16 @@ class AverageWalked(models.Model):
 
     def __str__(self):
         return "{} - user_id={}, n={}, m={}".format(self.local_datetime, self.user_id, self.window_size, self.mean_did_walked)
+    
+class BinaryWalked2(models.Model):
+    local_datetime = models.DateTimeField()
+    user_id = models.IntegerField()
+    did_walked = models.IntegerField()
+    local_date = models.DateField(null=True, blank=True)
+    local_time = models.TimeField(null=True, blank=True)
+    window_size = models.IntegerField()
+    threshold1 = models.FloatField()
+
+    def __str__(self):
+        return "{} - user_id={}, n={}, m={}".format(self.local_datetime, self.user_id, self.window_size, self.did_walked)
+    
