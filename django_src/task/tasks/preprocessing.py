@@ -1,12 +1,13 @@
 from celery import shared_task
 
-from django.db.models import Sum
+from django.db.models import Sum, Avg, Window, F, RowRange, Value
 
 from task.models import TaskLog
 
 from data.models import RawSteps
 from data.models import Padded_Steps
 from data.models import BinaryWalked
+from data.models import AverageWalked
 
 from datetime import datetime, timedelta
 import pytz
@@ -98,5 +99,45 @@ def binarize(user_id):
         )
     
     BinaryWalked.objects.bulk_create(insert_obj_list)
+    
+    average_walk.apply_async(
+        kwargs={
+            "user_id": user_id
+        }
+    )
 
+@shared_task
+def average_walk(user_id):
+    obj_list = BinaryWalked.objects.filter(
+        user_id=user_id
+    ).order_by("local_datetime")
+    
+    for n_days in range(0, 10):
+        TaskLog.log("  average_walk: user_id={}, n_days={}".format(user_id, n_days))
+        insert_obj_list = []
+        
+        new_obj_list = obj_list.annotate(
+            window_size=Value(n_days)
+        ).annotate(
+            mean_did_walked=Window(
+                expression=Avg('did_walked'),
+                order_by=F("local_datetime").asc(),
+                frame=RowRange(start=(-n_days),end=n_days)
+            )
+        )
+        
+        for new_obj in new_obj_list:
+            insert_obj_list.append(
+                AverageWalked(
+                    local_datetime=new_obj.local_datetime,
+                    user_id=new_obj.user_id,
+                    mean_did_walked=new_obj.mean_did_walked,
+                    local_date=new_obj.local_date,
+                    local_time=new_obj.local_time,
+                    window_size=new_obj.window_size
+                )
+            )
+        
+        AverageWalked.objects.bulk_create(insert_obj_list)
+    
     

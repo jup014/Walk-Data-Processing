@@ -16,4 +16,12 @@
             Execute the tasks: <input type="submit" value="Go!">
         </form>
     </li>
+
+    <li>
+        <form action="{% url 'dashboard-generic' %}" method="post" role="form" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="hidden" name="command" value="reset">
+            Reset Database: <input type="submit" value="Go!">
+        </form>
+    </li>
 </ul>

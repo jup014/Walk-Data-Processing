@@ -41,6 +41,10 @@ class DashboardGenericView(TemplateView):
                 service = TaskExecutionService()
                 
                 context["result"] = service.execute()
+            elif command == 'reset':
+                service = TaskExecutionService()
+                
+                context["result"] = service.reset()
             else:
                 context["result"] = "\n".join(msg_list)        
 
