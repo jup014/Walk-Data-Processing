@@ -4,6 +4,7 @@ from task.models import TaskLog
 
 from data.models import RawSteps
 from data.models import Padded_Steps
+from data.models import BinaryWalked
 
 from datetime import datetime, timedelta
 import pytz
@@ -47,3 +48,36 @@ def minute_padding(args):
         ))
     
     Padded_Steps.objects.bulk_create(padded_steps_list)
+    
+def binarize(args):
+    TaskLog.log("binarize: {}".format(args))
+    
+    args_dict = json.loads(args)
+
+    user_id = args_dict['user_id']
+    # local_date = datetime.strptime(args_dict['local_date'], '%Y-%m-%d').astimezone(pytz.utc)
+    
+    obj_list = Padded_Steps.objects.filter(
+        user_id=user_id
+    )
+    
+    def if_x_then_this_else_that(x, this, that):
+        if x:
+            return this
+        else:
+            return that
+        
+    insert_obj_list = []
+    for obj in obj_list:
+        insert_obj_list.append(
+            BinaryWalked(
+                local_datetime=obj.local_datetime,
+                user_id=obj.user_id,
+                did_walked=if_x_then_this_else_that(obj.steps>60, 1, 0), 
+                local_date=obj.local_date,
+                local_time=obj.local_time
+            )
+        )
+    
+    BinaryWalked.objects.bulk_create(insert_obj_list)
+    

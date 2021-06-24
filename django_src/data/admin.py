@@ -4,6 +4,7 @@ from walk_data_processing.admin import DeleteAllAdmin
 
 from .models import RawSteps
 from .models import Padded_Steps
+from .models import BinaryWalked
 
 
 @admin.action(description='Delete all RawSteps')
@@ -29,3 +30,17 @@ class PaddedStepsAdmin(DeleteAllAdmin):
 
 delete_all_padded_steps.acts_on_all=True
 admin.site.register(Padded_Steps, PaddedStepsAdmin)
+
+
+
+
+@admin.action(description='Delete all BinaryWalked')
+def delete_all_binary_walked(modeladmin, request, queryset):
+    BinaryWalked.objects.all().delete()
+
+class BinaryWalkedAdmin(DeleteAllAdmin):
+    fields = ['local_datetime', 'local_date', 'local_time', 'user_id', 'did_walked']
+    actions = [delete_all_binary_walked]
+
+delete_all_binary_walked.acts_on_all=True
+admin.site.register(BinaryWalked, BinaryWalkedAdmin)

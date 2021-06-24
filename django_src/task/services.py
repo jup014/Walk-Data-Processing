@@ -8,7 +8,7 @@ class TaskFetcherService:
     def get_next_task(self):
         try:
             with transaction.atomic():
-                task_obj = Task.objects.filter(Q(status=0), Q(depends=None) | Q(depends__status=3)).order_by('-when_created').first()
+                task_obj = Task.objects.filter(Q(status=0), Q(depends=None) | Q(depends__status=3)).order_by('when_created').first()
                 if task_obj:
                     task_obj.status = 1
                     task_obj.save()

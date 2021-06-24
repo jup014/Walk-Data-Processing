@@ -23,6 +23,12 @@ class Task(models.Model):
         import importlib
         moduleobj = importlib.import_module(name=modulename)
         return getattr(moduleobj, functionname)
+    
+    def __str__(self):
+        if self.depends.count() > 0:
+            return "{}({}): {}/{}".format(self.function_name, self.status, self.params, self.depends)
+        else:
+            return "{}({}): {}".format(self.function_name, self.status, self.params)
 
 class TaskLog(models.Model):
     when_created = models.DateTimeField(auto_now_add=True)
