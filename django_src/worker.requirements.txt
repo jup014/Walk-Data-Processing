@@ -1,3 +1,8 @@
 Django
 environ
 psycopg2
+celery
+django-celery-results
+watchdog
+PyYAML
+argh

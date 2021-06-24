@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     'frontpage',
     'dashboard',
     'data',
-    'task'
+    'task',
+    'django_celery_results'
 ]
 
 MIDDLEWARE = [
@@ -130,3 +131,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+CELERY_RESULT_BACKEND = 'django-db'
+CELERY_RESULT_BACKEND = 'django-cache'

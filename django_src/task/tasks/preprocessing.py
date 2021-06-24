@@ -1,3 +1,5 @@
+from celery import shared_task
+
 from django.db.models import Sum
 
 from task.models import TaskLog
@@ -12,50 +14,66 @@ import json
 import pprint
 import math
 
+@shared_task
 def minute_padding(args):
     TaskLog.log("minute_padding: {}".format(args))
     
-    args_dict = json.loads(args)
+    # args_dict = json.loads(args)
 
-    user_id = args_dict['user_id']
-    local_date = datetime.strptime(args_dict['local_date'], '%Y-%m-%d').astimezone(pytz.utc)
+    # user_id = args_dict['user_id']
+    user_id = args['user_id']
     
-    obj_list = RawSteps.objects.filter(
-        user_id=user_id, 
-        local_date=local_date).values(
-            'user_id', 
-            'local_datetime', 
-            'local_date', 
-            'local_time').annotate(steps2=Sum('steps'))
+    local_date_list = RawSteps.objects.filter(
+        user_id=user_id
+    ).distinct('local_date')
     
-    padded_list = [0] * 1440
-    
-    for obj in obj_list:
-        local_time = obj["local_time"]
-        list_index = local_time.hour * 60 + local_time.minute
-        padded_list[list_index] += obj["steps2"]
-        
     padded_steps_list = []
-    
-    for i in range(0, 1440):
-        local_datetime = local_date + timedelta(hours=math.floor(i/60), minutes=(i%60))
-        padded_steps_list.append(Padded_Steps(
-            local_datetime=local_datetime,
+
+    for a_local_date in local_date_list:
+        local_date = a_local_date.local_date
+        minute_list = RawSteps.objects.filter(
             user_id=user_id,
-            steps=padded_list[i],
-            local_date=local_date,
-            local_time=local_datetime.time()
-        ))
-    
+            local_date=local_date
+        ).values(
+            'user_id',
+            'local_datetime',
+            'local_date',
+            'local_time'
+        ).annotate(
+            steps2=Sum('steps')
+        )
+        
+        padded_list = [0] * 1440
+        
+        for a_minute in minute_list:
+            local_time = a_minute["local_time"]
+            list_index = local_time.hour * 60 + local_time.minute
+            padded_list[list_index] += a_minute["steps2"]
+        
+        for i in range(0, 1440):
+            local_datetime = datetime(
+                year=local_date.year,
+                month=local_date.month,
+                day=local_date.day).astimezone(pytz.utc) + timedelta(hours=math.floor(i/60), minutes=(i%60))
+            padded_steps_list.append(Padded_Steps(
+                local_datetime=local_datetime,
+                user_id=user_id,
+                steps=padded_list[i],
+                local_date=local_date,
+                local_time=local_datetime.time()
+            ))
+        
     Padded_Steps.objects.bulk_create(padded_steps_list)
     
-def binarize(args):
-    TaskLog.log("binarize: {}".format(args))
+    binarize.apply_async(
+        kwargs={
+            "user_id": user_id
+        }
+    )
     
-    args_dict = json.loads(args)
-
-    user_id = args_dict['user_id']
-    # local_date = datetime.strptime(args_dict['local_date'], '%Y-%m-%d').astimezone(pytz.utc)
+@shared_task
+def binarize(user_id):
+    TaskLog.log("binarize: user_id={}".format(user_id))
     
     obj_list = Padded_Steps.objects.filter(
         user_id=user_id
@@ -80,4 +98,5 @@ def binarize(args):
         )
     
     BinaryWalked.objects.bulk_create(insert_obj_list)
+
     

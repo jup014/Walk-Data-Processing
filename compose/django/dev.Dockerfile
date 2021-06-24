@@ -10,4 +10,5 @@ WORKDIR /app
 ADD    ./django_src/django.requirements.txt   /app/
 RUN    pip install -r django.requirements.txt
 
-CMD [ "python", "manage.py", "runserver", "0:8000" ]
+CMD python manage.py migrate && \
+    python manage.py runserver 0:8000

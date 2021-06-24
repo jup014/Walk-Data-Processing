@@ -47,3 +47,10 @@ services:
             - DJANGO_SECRET_KEY=dev_secret_key
         volumes:
             - ./django_src:/app
+    
+    rabbitmq:
+        image: rabbitmq
+        ports:
+            - 5462:5462
+        volumes:
+            - ./django_src:/app

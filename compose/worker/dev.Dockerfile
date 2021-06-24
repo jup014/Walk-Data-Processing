@@ -10,4 +10,4 @@ WORKDIR /app
 ADD    ./django_src/worker.requirements.txt   /app/
 RUN    pip install -r worker.requirements.txt
 
-CMD [ "python", "worker.py"]
+CMD watchmedo auto-restart --directory=./ --pattern=*.py --recursive -- celery -A walk_data_processing worker -l info -Q default
