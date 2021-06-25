@@ -6,3 +6,4 @@ django-celery-results
 watchdog
 PyYAML
 argh
+psutil

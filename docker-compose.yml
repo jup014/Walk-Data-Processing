@@ -1,13 +1,10 @@
 version: '3'
 
-volumes:
-    django_sample_db_dev: {}
-
 services: 
     db:
         image: postgres
         volumes:
-            - django_sample_db_dev:/var/lib/postgresql/data
+            - /Users/ffee21/docker/db/django_sample_db_dev:/var/lib/postgresql/data
         environment:
             - POSTGRES_DB=walkdb
             - POSTGRES_USER=sampleuser
@@ -21,7 +18,7 @@ services:
         env_file:
             - django_src/credentials/dev.env
         environment:
-            - DJANGO_DEBUG=True
+            - DJANGO_DEBUG=False
             - DJANGO_DB_HOST=db
             - DJANGO_DB_PORT=5432
             - DJANGO_DB_NAME=walkdb
@@ -38,7 +35,7 @@ services:
             context: .
             dockerfile: ./compose/worker/dev.Dockerfile
         environment:
-            - DJANGO_DEBUG=True
+            - DJANGO_DEBUG=False
             - DJANGO_DB_HOST=db
             - DJANGO_DB_PORT=5432
             - DJANGO_DB_NAME=walkdb

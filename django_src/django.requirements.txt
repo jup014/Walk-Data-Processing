@@ -3,3 +3,4 @@ environ
 psycopg2
 celery
 django-celery-results
+psutil

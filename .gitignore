@@ -6,3 +6,5 @@ django_src/credentials/*.env
 .DS_Store
 django_src/out.profile
 django_src/profile.txt
+*.csv
+*.profile

@@ -20,12 +20,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
-DEBUG = os.environ['DJANGO_DEBUG']
+DEBUG = os.environ.get('DJANGO_DEBUG', '')
+# DEBUG = False
 
-if DEBUG:
-    SECRET_KEY = os.environ['DJANGO_SECRET_KEY']
-else:
-    SECRET_KEY = os.environ['SECRET_KEY']
+SECRET_KEY='3bxa6(_&sa9=a%=jm-6_-mkiae%rk1v4c*!5wx3!s-bbv7uvm&'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
@@ -45,7 +43,8 @@ INSTALLED_APPS = [
     'dashboard',
     'data',
     'task',
-    'django_celery_results'
+    'django_celery_results',
+    'analysis'
 ]
 
 MIDDLEWARE = [
@@ -85,11 +84,11 @@ WSGI_APPLICATION = 'walk_data_processing.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'HOST': os.environ['DJANGO_DB_HOST'],
-        'NAME': os.environ['DJANGO_DB_NAME'],
-        'USER': os.environ['DJANGO_DB_USER'],
-        'PASSWORD': os.environ['DJANGO_DB_PASSWORD'],
-        'PORT': os.environ['DJANGO_DB_PORT'],
+        'HOST': os.environ.get('DJANGO_DB_HOST', ''),
+        'NAME': os.environ.get('DJANGO_DB_NAME', ''),
+        'USER': os.environ.get('DJANGO_DB_USER', ''),
+        'PASSWORD': os.environ.get('DJANGO_DB_PASSWORD', ''),
+        'PORT': os.environ.get('DJANGO_DB_PORT', ''),
     }
 }
 

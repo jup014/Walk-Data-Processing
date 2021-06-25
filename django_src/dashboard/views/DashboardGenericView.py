@@ -45,6 +45,14 @@ class DashboardGenericView(TemplateView):
                 service = TaskExecutionService()
                 
                 context["result"] = service.reset()
+            elif command == 'load_data':
+                service = TaskExecutionService()
+                
+                context["result"] = service.load_data()
+            elif command == 'aggregate':
+                service = TaskExecutionService()
+                
+                context["result"] = service.aggr()
             else:
                 context["result"] = "\n".join(msg_list)        
 

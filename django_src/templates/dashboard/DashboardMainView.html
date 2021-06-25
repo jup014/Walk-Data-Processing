@@ -17,6 +17,24 @@
         </form>
     </li>
 
+
+    <li>
+        <form action="{% url 'dashboard-generic' %}" method="post" role="form" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="hidden" name="command" value="load_data">
+            Enqueue: <input type="submit" value="Go!">
+        </form>
+    </li>
+
+
+    <li>
+        <form action="{% url 'dashboard-generic' %}" method="post" role="form" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="hidden" name="command" value="aggregate">
+            Aggregate: <input type="submit" value="Go!">
+        </form>
+    </li>
+
     <li>
         <form action="{% url 'dashboard-generic' %}" method="post" role="form" enctype="multipart/form-data">
             {% csrf_token %}
