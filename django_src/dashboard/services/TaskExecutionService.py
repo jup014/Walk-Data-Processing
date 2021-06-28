@@ -1,12 +1,12 @@
 from django.db import IntegrityError, transaction
 
 from data.models import RawSteps, Padded_Steps, BinaryWalked, \
-    AverageWalked, BinaryWalked2
+    AverageWalked, BinaryWalked2, ThreeHour
 from analysis.models import Aggregated1
 
 from task.models import TaskLog
 
-from task.tasks import minute_padding, aggregate2, load_data
+from task.tasks import minute_padding, aggregate2, load_data, minute_padding2, enqueue_task
 
 import pprint
 import json
@@ -32,6 +32,7 @@ class TaskExecutionService:
         return "submitted"
     
     def reset(self):
+        ThreeHour.objects.all().delete()
         Aggregated1.objects.all().delete()
         BinaryWalked2.objects.all().delete()
         Padded_Steps.objects.all().delete()
@@ -62,3 +63,8 @@ class TaskExecutionService:
         aggregate2.apply_async(
             kwargs={}
         )
+        
+        
+class TaskExecutionService2:
+    def prepare(self):
+        enqueue_task.apply_async(kwargs={})

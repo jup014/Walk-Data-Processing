@@ -42,4 +42,12 @@
             Reset Database: <input type="submit" value="Go!">
         </form>
     </li>
+
+    <li>
+        <form action="{% url 'dashboard-generic' %}" method="post" role="form" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="hidden" name="command" value="prepare2">
+            Prepare Database 2: <input type="submit" value="Go!">
+        </form>
+    </li>
 </ul>

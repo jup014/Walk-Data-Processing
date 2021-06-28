@@ -15,10 +15,23 @@ from task.models import TaskLog
 import gc
 
 class T:
+    def get_window_average(list_obj, i, window_size):
+        index_start = i - window_size
+        index_start = T.ifelse(index_start<0, 0, index_start)
+        index_end = i + window_size
+        index_end = T.ifelse(index_end>=1440, 1439, index_end)
+        
+        sum = 0
+        
+        for index_minute in range(index_start, index_end+1):
+            sum += list_obj[index_minute]
+        
+        return sum / (window_size * 2 + 1)
+    
     def get_minute_index(time):
         return time.hour * 60 + time.minute
 
-    def if_x_then_this_else_that(x, this, that):
+    def ifelse(x, this, that):
         if x:
             return this
         else:
@@ -97,7 +110,7 @@ class WalkingDataAnalysis:
         for key_date in self.raw_data:
             self.binary1[key_date] = list(self.raw_data[key_date])
             for index_minute in range(0, 1440):
-                self.binary1[key_date][index_minute] = T.if_x_then_this_else_that(self.binary1[key_date][index_minute] > self.pad_criteria, 1, 0)
+                self.binary1[key_date][index_minute] = T.ifelse(self.binary1[key_date][index_minute] > self.pad_criteria, 1, 0)
         
         if not self.debug:
             del self.raw_data
@@ -144,7 +157,7 @@ class WalkingDataAnalysis:
             for key_window_size, dict_window_size in dict_threshold1.items():
                 for key_date, list_date in dict_window_size.items():
                     for index_minute in range(0, 1440):
-                        self.binary2[key_threshold1][key_window_size][key_date][index_minute] = T.if_x_then_this_else_that(
+                        self.binary2[key_threshold1][key_window_size][key_date][index_minute] = T.ifelse(
                             list_date[index_minute] > key_threshold1,
                             1, 0
                         )
@@ -169,7 +182,7 @@ class WalkingDataAnalysis:
                         sum = 0
                         for offset_minute in range(0, 180):
                             sum += list_date[index_three_hour + offset_minute]
-                        self.three_hour[key_threshold1][key_window_size][key_date][math.floor(index_three_hour / 180)] = T.if_x_then_this_else_that(sum > 0, 1, 0)
+                        self.three_hour[key_threshold1][key_window_size][key_date][math.floor(index_three_hour / 180)] = T.ifelse(sum > 0, 1, 0)
         
         if not self.debug:
             del self.binary2
@@ -287,7 +300,7 @@ class WalkingDataAnalysis:
                             
                             dict_result["key_threshold2"] = threshold2
                             
-                            dict_result["predicted"] = T.if_x_then_this_else_that(
+                            dict_result["predicted"] = T.ifelse(
                                 (sum / key_n_days) > threshold2,
                                 1, 0
                             )

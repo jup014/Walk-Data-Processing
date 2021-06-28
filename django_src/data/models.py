@@ -50,3 +50,19 @@ class BinaryWalked2(models.Model):
     def __str__(self):
         return "{} - user_id={}, n={}, m={}".format(self.local_datetime, self.user_id, self.window_size, self.did_walked)
     
+
+
+
+
+class ThreeHour(models.Model):
+    user_id = models.IntegerField()
+    local_date = models.DateField()
+    step = models.IntegerField()
+    window_size = models.IntegerField()
+    threshold1 = models.FloatField()
+    index_three_hour = models.IntegerField()
+    did_walked = models.IntegerField()
+    
+    def __str__(self):
+        return "user_id={}, local_date={}, step={}, window_size={}, threshold1={}, index_three_hour={}, did_walked={}". \
+            format(self.user_id, self.local_date, self.step, self.window_size, self.threshold1, self.index_three_hour, self.did_walked)

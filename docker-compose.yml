@@ -1,10 +1,13 @@
 version: '3'
 
+volumes:
+    django_sample_db_dev: {}
+
 services: 
     db:
         image: postgres
         volumes:
-            - /Users/ffee21/docker/db/django_sample_db_dev:/var/lib/postgresql/data
+            - django_sample_db_dev:/var/lib/postgresql/data
         environment:
             - POSTGRES_DB=walkdb
             - POSTGRES_USER=sampleuser
