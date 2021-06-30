@@ -56,6 +56,12 @@ class DashboardGenericView(TemplateView):
             elif command == 'prepare2':
                 service = TaskExecutionService2()
                 context["result"] = service.prepare()
+            elif command == "analysis_2ndPhase":
+                service = TaskExecutionService2()
+                context["result"] = service.analysis_2ndPhase()
+            elif command == "view_progress":
+                service = TaskExecutionService2()
+                context["result"] = service.view_progress()
             else:
                 context["result"] = "\n".join(msg_list)        
 

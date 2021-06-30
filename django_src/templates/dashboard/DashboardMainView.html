@@ -47,7 +47,24 @@
         <form action="{% url 'dashboard-generic' %}" method="post" role="form" enctype="multipart/form-data">
             {% csrf_token %}
             <input type="hidden" name="command" value="prepare2">
-            Prepare Database 2: <input type="submit" value="Go!">
+            prepare2: <input type="submit" value="Go!">
         </form>
     </li>
+
+    <li>
+        <form action="{% url 'dashboard-generic' %}" method="post" role="form" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="hidden" name="command" value="analysis_2ndPhase">
+            analysis_2ndPhase: <input type="submit" value="Go!">
+        </form>
+    </li>
+
+    <li>
+        <form action="{% url 'dashboard-generic' %}" method="post" role="form" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="hidden" name="command" value="view_progress">
+            view_progress: <input type="submit" value="Go!">
+        </form>
+    </li>
+
 </ul>

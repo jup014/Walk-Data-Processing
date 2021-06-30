@@ -8,7 +8,10 @@ from .models import BinaryWalked
 from .models import AverageWalked
 from .models import BinaryWalked2
 from .models import ThreeHour
+from .models import Predicted_Actual
+from .models import TaskInfo
 
+import pprint
 
 
 @admin.action(description='Delete all RawSteps')
@@ -88,3 +91,31 @@ class ThreeHourAdmin(DeleteAllAdmin):
               'did_walked', ]
     
 admin.site.register(ThreeHour, ThreeHourAdmin)
+
+
+class Predicted_ActualAdmin(DeleteAllAdmin):
+    fields = ['user_id', 
+              'step', 
+              'window_size', 
+              'threshold1',
+              'method',
+              'n_days',
+              'threshold2',
+              'TP',
+              'TN',
+              'FP',
+              'FN',]    
+    
+admin.site.register(Predicted_Actual, Predicted_ActualAdmin)
+
+
+@admin.action(description='Delete all TaskInfo')
+def delete_all_task_info(modeladmin, request, queryset):
+    TaskInfo.objects.all().delete()
+    
+class TaskInfoAdmin(DeleteAllAdmin):
+    readonly_fields = ['when_created','when_fetched', 'when_finished',]
+    actions = [delete_all_task_info]
+
+delete_all_task_info.acts_on_all = True
+admin.site.register(TaskInfo, TaskInfoAdmin)

@@ -15,6 +15,30 @@ from task.models import TaskLog
 import gc
 
 class T:
+    def getList(key, iterable):
+        return list(map(lambda x: getattr(x, key), iterable))
+    
+    def get_dict_two_by_two_table(actual, predicted, threshold):
+        dict_return = {
+            "TP": 0,
+            "TN": 0,
+            "FP": 0,
+            "FN": 0
+        }
+        for i in range(len(actual)):
+            if actual[i] == 1:
+                if predicted[i] > threshold:
+                    dict_return['TP'] += 1
+                else:
+                    dict_return['FN'] += 1
+            else:
+                if predicted[i] > threshold:
+                    dict_return['FP'] += 1
+                else:
+                    dict_return['TN'] += 1
+        return dict_return
+                    
+    
     def get_window_average(list_obj, i, window_size):
         index_start = i - window_size
         index_start = T.ifelse(index_start<0, 0, index_start)
@@ -63,7 +87,6 @@ class T:
     def bulk_create_enque(class_name, obj, obj_list, commit_count=100000):
         if len(obj_list) >= commit_count:
             T.bulk_create_flush(class_name, obj_list)
-            T.gc()
         else:
             obj_list.append(obj)
 
